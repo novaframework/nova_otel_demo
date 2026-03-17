@@ -124,7 +124,7 @@ plugin_sets_controller_info(_Config) ->
 
     receive
         {span, Span = #span{name = Name}} ->
-            ?assertEqual(<<"GET demo_controller:hello">>, Name),
+            ?assertEqual(<<"GET /hello">>, Name),
             Attrs = otel_attributes:map(Span#span.attributes),
             ?assertEqual(<<"nova_otel_demo">>, maps:get('nova.app', Attrs)),
             ?assertEqual(<<"demo_controller">>, maps:get('nova.controller', Attrs)),
