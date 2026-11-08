@@ -7,10 +7,10 @@
         kernel,
         stdlib,
         inets,
-        nova,
         opentelemetry_exporter,
-        opentelemetry,
         opentelemetry_experimental,
+        opentelemetry,
+        nova,
         opentelemetry_nova
     ]},
     {env, []},

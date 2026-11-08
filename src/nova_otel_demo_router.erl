@@ -7,9 +7,6 @@ routes(_Environment) ->
         #{
             prefix => "",
             security => false,
-            plugins => [
-                {pre_request, otel_nova_plugin, #{}}
-            ],
             routes => [
                 {"/hello", fun demo_controller:hello/1, #{methods => [get]}},
                 {"/echo", fun demo_controller:echo/1, #{methods => [post]}},
