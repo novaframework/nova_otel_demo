@@ -6,5 +6,8 @@ start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 init([]) ->
-    Children = [otel_nova_prom_server:child_spec(#{port => 9464, ip => {0, 0, 0, 0}})],
-    {ok, {#{strategy => one_for_all}, Children}}.
+    Metrics = #{
+        port => application:get_env(nova_otel_demo, metrics_port, 9464),
+        ip => application:get_env(nova_otel_demo, metrics_ip, {127, 0, 0, 1})
+    },
+    {ok, {#{strategy => one_for_all}, [otel_nova_prom_server:child_spec(Metrics)]}}.
