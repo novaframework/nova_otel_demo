@@ -16,8 +16,6 @@ up: ## Start observability stack (Grafana, Collector, Tempo, Mimir)
 	@echo "Services:"
 	@echo "  Grafana:         http://localhost:3000"
 	@echo "  OTel Collector:  http://localhost:4318 (OTLP HTTP)"
-	@echo "  Tempo:           http://localhost:3200"
-	@echo "  Mimir:           http://localhost:9009"
 	@echo ""
 	@echo "Run 'make shell' to start the Nova app"
 

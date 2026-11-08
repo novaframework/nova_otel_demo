@@ -1,13 +1,13 @@
 services:
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector-contrib:0.164.0
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./otel-collector-config.yml:/etc/otelcol-contrib/config.yaml
     ports:
-      - "4317:4317"
-      - "4318:4318"
+      - "127.0.0.1:4317:4317"
+      - "127.0.0.1:4318:4318"
     depends_on:
       - tempo
       - mimir
@@ -18,27 +18,23 @@ services:
     volumes:
       - ./tempo.yml:/etc/tempo.yaml
     command: ["-config.file=/etc/tempo.yaml"]
-    ports:
-      - "3200:3200"
 
   mimir:
-    image: grafana/mimir:latest
+    image: grafana/mimir:3.2.4
     volumes:
       - ./mimir.yml:/etc/mimir.yaml
     command: ["-config.file=/etc/mimir.yaml"]
-    ports:
-      - "9009:9009"
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:13.2.5
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       - tempo
       - mimir
