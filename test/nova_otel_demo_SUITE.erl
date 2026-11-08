@@ -8,6 +8,7 @@
 -export([all/0, init_per_suite/1, end_per_suite/1, init_per_testcase/2]).
 -export([
     request_is_traced_with_route_and_controller/1,
+    resource_names_the_service/1,
     plugins_after_otel_still_run/1,
     otel_plugin_runs_before_the_request_plugin/1,
     incoming_trace_context_is_continued/1,
@@ -21,6 +22,7 @@
 all() ->
     [
         request_is_traced_with_route_and_controller,
+        resource_names_the_service,
         plugins_after_otel_still_run,
         otel_plugin_runs_before_the_request_plugin,
         incoming_trace_context_is_continued,
@@ -62,6 +64,14 @@ request_is_traced_with_route_and_controller(_Config) ->
         },
         otel_attributes:map(Attributes)
     ).
+
+resource_names_the_service(_Config) ->
+    Attributes =
+        case otel_resource:attributes(otel_resource_detector:get_resource()) of
+            undefined -> ct:fail(no_resource_attributes);
+            Detected -> Detected
+        end,
+    ?assertMatch(#{'service.name' := ~"nova_otel_demo"}, otel_attributes:map(Attributes)).
 
 plugins_after_otel_still_run(_Config) ->
     Body = ~"{\"message\":\"hi\"}",
