@@ -3,7 +3,7 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    opentelemetry_nova:setup(#{prometheus => #{port => 9464}}),
+    ok = opentelemetry_nova:setup(),
     nova_otel_demo_sup:start_link().
 
 stop(_State) -> ok.
